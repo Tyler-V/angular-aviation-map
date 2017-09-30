@@ -1,60 +1,60 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { MapService } from './services/map.service';
 import { NexradService } from './services/nexrad.service';
 import * as L from 'leaflet';
 import * as esri from 'esri-leaflet';
-import * as $ from "jquery";
 import 'leaflet-providers';
 
 @Component({
   selector: 'nexrad-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
-  providers: [NexradService]
+  providers: [MapService, NexradService]
 })
 export class MapComponent implements OnInit {
 
+  radarBounds: L.LatLngBounds;
   radarLayer: L.Layer;
-
   radarUrl: any;
 
-  map: L.Map;
+  previousZoom: number;
   maxBounds = L.latLngBounds(
     L.latLng(20, -140),
     L.latLng(50, -50)
   );
 
-  constructor(private _elementRef: ElementRef, private _nexradService: NexradService, private sanitizer: DomSanitizer) { }
+  constructor(private elementRef: ElementRef, private nexradService: NexradService, private mapService: MapService) {   }
 
   ngOnInit() {
-    this.map = new L.Map(this._elementRef.nativeElement, {
+    this.mapService.map = new L.Map(this.elementRef.nativeElement, {
       attributionControl: false,
       zoomControl: false,
       //maxBounds: this.maxBounds,
       minZoom: 5,
       maxZoom: 19,
-      layers: [L.tileLayer.provider('Esri.WorldStreetMap')]
-    }).setView([37.09024, -95.712891], 5);
+      layers: [L.tileLayer.provider('Esri.WorldStreetMap')],
+      doubleClickZoom: false
+    });
 
-    window.navigator.geolocation.getCurrentPosition(location => {
-      let latLng = new L.LatLng(location.coords.latitude, location.coords.longitude);
-      this.map.flyTo(latLng, 6, {
-        duration: 3,
-        noMoveStart: true
-      });
-    }, (error) => {
+    this.mapService.map.on("load", (e) => {
+      this.setRadarImage();
+    });
 
-    },
-      {
-        enableHighAccuracy: true
-      }
-    );
+    this.mapService.map.setView([37.09024, -95.712891], 5);
 
-    this.map.on("zoomend, moveend", () => {
-      this._nexradService.getRadarImage(950, 1920, this.map.getBounds(), null, b64 => {
-        if (this.radarLayer) this.map.removeLayer(this.radarLayer);
-        this.radarLayer = L.imageOverlay(b64, this.map.getBounds()).addTo(this.map);
-      })
-    })
+    this.mapService.map.on("moveend", () => {
+      this.setRadarImage();
+    });
+  }
+
+  setRadarImage() {
+    this.radarBounds = this.mapService.map.getBounds();
+    let dimensions = this.mapService.map.getSize();
+    this.nexradService.getMRMSImage(dimensions.y, dimensions.x, this.radarBounds, b64 => {
+      if (this.radarLayer) this.mapService.map.removeLayer(this.radarLayer);
+      this.radarLayer = L.imageOverlay(b64, this.radarBounds, {
+        opacity: .75
+      }).addTo(this.mapService.map);
+    });
   }
 }
