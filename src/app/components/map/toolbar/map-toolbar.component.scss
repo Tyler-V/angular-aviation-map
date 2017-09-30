@@ -5,15 +5,14 @@
     left: 15px;
 }
 
-.fa {
-    cursor: pointer;
-}
-
 .icons {
-    display: block;
     width: 50px;
     user-select: none;
     .icon {
         margin-top: 10px;
     }
+}
+
+.fa {
+    cursor: pointer;
 }

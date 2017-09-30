@@ -1,16 +1,14 @@
 <span class="fa fa-stack fa-2x" [@spinIn]="state" (click)="toggle()">
   <i class="fa fa-circle fa-stack-2x fa-inverse text-shadow-1"></i>
-  <i class="material-icons fa-stack-1x" [@fadeOut]="state">menu</i>
-  <i class="material-icons fa-stack-1x" [@fadeIn]="state">clear</i>
+  <i class="fa-stack-1x material-icons" [@fadeOut]="state">menu</i>
+  <i class="fa-stack-1x material-icons" [@fadeIn]="state">clear</i>
 </span>
 
-<div class="icon-container" [@bounceIn]="state">
-    <div *ngFor="let icon of icons" class="icons">
-        <div class="icon">
-            <span class="fa fa-stack fa-2x">
-              <i class="fa fa-circle fa-stack-2x fa-inverse text-shadow-1"></i>
-              <i class="material-icons fa-stack-1x">{{icon}}</i>
-            </span>
-        </div>
+<div class="icons" [@bounceIn]="state">
+    <div *ngFor="let icon of icons" class="icon">
+        <span class="fa fa-stack fa-2x">
+          <i class="fa fa-circle fa-stack-2x fa-inverse text-shadow-1"></i>
+          <i class="material-icons fa-stack-1x">{{icon}}</i>
+        </span>
     </div>
 </div>
