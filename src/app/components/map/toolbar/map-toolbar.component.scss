@@ -16,3 +16,10 @@
 .fa {
     cursor: pointer;
 }
+
+.fa-stack {
+    transition: all .25s ease-in-out;
+    &:hover {
+        transform: scale(.9);
+    }
+}

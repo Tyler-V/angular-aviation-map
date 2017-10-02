@@ -32,7 +32,7 @@ export class MapComponent implements OnInit {
       //maxBounds: this.maxBounds,
       minZoom: 5,
       maxZoom: 19,
-      layers: [L.tileLayer.provider('Esri.WorldStreetMap')],
+      layers: [L.tileLayer.provider('Esri.WorldImagery')],
       doubleClickZoom: false
     });
 
@@ -50,6 +50,12 @@ export class MapComponent implements OnInit {
   setRadarImage() {
     this.radarBounds = this.mapService.map.getBounds();
     let dimensions = this.mapService.map.getSize();
+    // this.nexradService.getNEXRADImage(dimensions.y, dimensions.x, this.radarBounds, b64 => {
+    //   if (this.radarLayer) this.mapService.map.removeLayer(this.radarLayer);
+    //   this.radarLayer = L.imageOverlay(b64, this.radarBounds, {
+    //     opacity: .75
+    //   }).addTo(this.mapService.map);
+    // });
     this.nexradService.getMRMSImage(dimensions.y, dimensions.x, this.radarBounds, b64 => {
       if (this.radarLayer) this.mapService.map.removeLayer(this.radarLayer);
       this.radarLayer = L.imageOverlay(b64, this.radarBounds, {

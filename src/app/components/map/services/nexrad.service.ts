@@ -4,6 +4,8 @@ import { Http, Headers, URLSearchParams, Response } from '@angular/http';
 @Injectable()
 export class NexradService {
 
+  _proxy = "https://cors-anywhere.herokuapp.com/";
+
   constructor(private http: Http) { }
 
   getRadar(height: number, width: number, bounds: L.LatLngBounds) {
@@ -29,12 +31,12 @@ export class NexradService {
     });
   }
 
-  getNEXRADImage(height: number, width: number, bounds: L.LatLngBounds, time: any, onload: (string) => void) {
+  getNEXRADImage(height: number, width: number, bounds: L.LatLngBounds, onload: (string) => void, time?: number) {
     let url = "https://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi?&REQUEST=GetMap&TRANSPARENT=true&FORMAT=image/png&BGCOLOR=0x000000&VERSION=1.1.1&LAYERS=nexrad-n0r&STYLES=default&CRS=EPSG:4326&SRS=EPSG:4326";
     url += "&WIDTH=" + width;
     url += "&HEIGHT=" + height;
     url += "&BBOX=" + this.latLngBoundsToBBOX(bounds);
-    if (time) url += "&TIME=" + time;
+    if (time) url += "&TIME=" + String(time);
 
     this.getImage(url, height, width, (dataUrl) => {
       onload(dataUrl)
@@ -59,6 +61,7 @@ export class NexradService {
   }
 
   getImage(url, height, width, callback: (string) => void) {
+
     var img = new Image();
 
     img.onload = (e: any) => {
@@ -72,7 +75,7 @@ export class NexradService {
     };
 
     img.setAttribute('crossOrigin', 'anonymous');
-    img.src = url;
+    img.src = this._proxy + url;
   }
 
   private latLngBoundsToBBOX(bounds: L.LatLngBounds): string {

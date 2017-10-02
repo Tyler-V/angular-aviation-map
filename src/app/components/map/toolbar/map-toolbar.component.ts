@@ -55,21 +55,21 @@ import { trigger, state, style, animate, stagger, query, transition, keyframes }
     trigger('bounceIn', [
       transition('closed => open', [
         query(':enter', style({ opacity: 0 })),
-        query(':enter', stagger('200ms', [
-          animate('1s ease-in', keyframes([
-            style({ opacity: 0, transform: 'translateX(-100px)', offset: 0 }),
-            style({ opacity: .5, transform: 'translateX(15px)', offset: .3 }),
-            style({ opacity: .5, transform: 'translateX(-5px)', offset: .5 }),
+        query(':enter', stagger('100ms', [
+          animate('700ms ease-in', keyframes([
+            style({ opacity: 1, transform: 'translateX(-100px)', offset: 0 }),
+            style({ opacity: 1, transform: 'translateX(20px)', offset: .25 }),
+            style({ opacity: 1, transform: 'translateX(-10px)', offset: .5 }),
             style({ opacity: 1, transform: 'translateX(0)', offset: 1 }),
           ]))
         ]))
       ]),
       transition('open => closed', [
-        query(':leave', stagger('-200ms', [
-          animate('1s ease-out', keyframes([
-            style({ transform: 'translateX(0)', offset: 0 }),
-            style({ transform: 'translateX(5px)', offset: .3 }),
-            style({ transform: 'translateX(-100px)', offset: 1 }),
+        query(':leave', stagger('-100ms', [
+          animate('700ms ease-out', keyframes([
+            style({ opacity: 1, transform: 'translateX(0)', offset: 0 }),
+            style({ opacity: .5, transform: 'translateX(10px)', offset: .3 }),
+            style({ opacity: 0, transform: 'translateX(-100px)', offset: 1 }),
           ]))
         ]))
       ])
@@ -79,7 +79,7 @@ import { trigger, state, style, animate, stagger, query, transition, keyframes }
 export class MapToolbarComponent implements OnInit {
 
   state: string = "closed";
-  _icons: Array<string> = ["layers", "my_location", "autorenew"];
+  _icons: Array<string> = ["map", "layers", "my_location", "autorenew", "fullscreen"];
   icons: Array<string> = [];
 
   constructor() { }
@@ -89,5 +89,36 @@ export class MapToolbarComponent implements OnInit {
   toggle() {
     this.state = this.state == "closed" ? "open" : "closed";
     this.icons = this.icons.length == 0 ? this._icons : [];
+  }
+
+  click(icon: string) {
+    switch (icon) {
+      case "map": this.openMaps();
+      case "layers": this.openLayers();
+      case "my_location": this.setLocation();
+      case "autorewnew": this.refresh();
+      case "fullscreen": this.fullscreen();
+    }
+    this.toggle();
+  }
+
+  openMaps() {
+
+  }
+
+  openLayers() {
+
+  }
+
+  setLocation() {
+
+  }
+
+  refresh() {
+
+  }
+
+  fullscreen() {
+
   }
 }
