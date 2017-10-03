@@ -10,14 +10,11 @@ export class MapService implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() { }
 
   @HostListener('window:resize', ['$event'])
   onResize(e) {
     this.width = e.target.innerWidth;
     this.height = e.target.innerHeight;
   }
-
 }
