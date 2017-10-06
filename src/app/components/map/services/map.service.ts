@@ -1,12 +1,14 @@
-import { Injectable, HostListener, OnInit } from '@angular/core';
+import { Injectable, HostListener, OnInit, EventEmitter } from '@angular/core';
 
 @Injectable()
 export class MapService implements OnInit {
 
   map: L.Map;
-
   width: number;
   height: number;
+  isFullScreen: boolean;
+
+  setLocationEvent: EventEmitter<number> = new EventEmitter();
 
   constructor() { }
 

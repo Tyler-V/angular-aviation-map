@@ -1,3 +1,7 @@
+<div [style.display]="shared.isLoading() ? 'block' : 'none'" class="loading">
+    <div class="icon"></div>
+</div>
+
 <nexrad-map></nexrad-map>
 
 <router-outlet></router-outlet>

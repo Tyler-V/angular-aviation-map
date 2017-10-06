@@ -9,11 +9,15 @@ import { AppComponent } from './app.component';
 import { MapComponent } from './components/map/map.component';
 import { MapToolbarComponent } from './components/map/toolbar/map-toolbar.component';
 
+import { SharedService } from './shared/shared.service';
+import { MapsComponent } from './components/map/toolbar/maps/maps.component';
+
 @NgModule({
   declarations: [
     AppComponent,
     MapComponent,
-    MapToolbarComponent
+    MapToolbarComponent,
+    MapsComponent
   ],
   imports: [
     BrowserModule,
@@ -22,7 +26,7 @@ import { MapToolbarComponent } from './components/map/toolbar/map-toolbar.compon
     BrowserAnimationsModule,
     MdButtonModule, MdCheckboxModule, MdSidenavModule
   ],
-  providers: [],
+  providers: [SharedService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

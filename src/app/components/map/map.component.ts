@@ -1,7 +1,8 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, EventEmitter } from '@angular/core';
 import { MapService } from './services/map.service';
 import { WeatherService } from './services/weather.service';
 import { FaaService } from './services/faa.service';
+import { SharedService } from '../../shared/shared.service';
 import * as L from 'leaflet';
 import * as esri from 'esri-leaflet';
 import 'leaflet-providers';
@@ -23,50 +24,43 @@ export class MapComponent implements OnInit {
     L.latLng(50, -50)
   );
 
-  constructor(private elementRef: ElementRef, private weatherService: WeatherService, private mapService: MapService, private faaService: FaaService) { }
+  constructor(private elementRef: ElementRef, private weatherService: WeatherService, private mapService: MapService, private faaService: FaaService, private shared: SharedService) { }
 
   ngOnInit() {
-    this.mapService.map = this.map = new L.Map(this.elementRef.nativeElement, {
+    this.map = this.mapService.map = new L.Map(this.elementRef.nativeElement, {
       attributionControl: false,
       zoomControl: false,
-      //maxBounds: this.maxBounds,
+      maxBounds: this.maxBounds,
       minZoom: 5,
       maxZoom: 19,
-      //layers: [L.tileLayer.provider('Esri.WorldImagery')],
-      doubleClickZoom: false
+      layers: [new L.TileLayer('http://wms.chartbundle.com/tms/1.0.0/sec/{z}/{x}/{-y}.png', {
+        updateWhenIdle: false
+      })]
     });
 
-    this.mapService.map.on("load", (e) => {
-      this.setVFRSectional();
+    this.map.on("load", (e) => {
+      this.mapService.setLocationEvent.emit();
       this.setWeatherRadar();
     });
 
-    this.mapService.map.setView([37.09024, -95.712891], 5);
-
-    this.mapService.map.on("moveend", () => {
-      this.setVFRSectional();
+    this.map.on("moveend", (e) => {
       this.setWeatherRadar();
     });
-  }
 
-  setVFRSectional() {
-    this.faaService.getVFRSectional(image => {
-      this.sectionalLayer = L.imageOverlay(image, this.map.getBounds()).addTo(this.map);
-      this.setOverlayOrder();
+    this.map.on("zoomstart", () => {
+      if (this.radarLayer) this.map.removeLayer(this.radarLayer);
     });
+
+    this.map.setView([37.09024, -95.712891], 5);
   }
 
   setWeatherRadar() {
+    //this.shared.showLoading();
     this.weatherService.getMRMS(image => {
       if (this.radarLayer) this.map.removeLayer(this.radarLayer);
-      this.radarLayer = L.imageOverlay(image, this.map.getBounds(), { opacity: .5 }).addTo(this.map).bringToFront();
-    });
-  }
-
-  setOverlayOrder() {
-    if (this.radarLayer) {
-      this.map.removeLayer(this.radarLayer);
+      this.radarLayer = L.imageOverlay(image, this.map.getBounds(), { opacity: .5 }).bringToFront();
       this.map.addLayer(this.radarLayer);
-    }
+      //this.shared.hideLoading();
+    });
   }
 }

@@ -15,15 +15,6 @@ export class FaaService {
   getVFRSectional(onload: (string) => void) {
     let zoom = this.mapService.map.getZoom();
     let bounds = this.mapService.map.getBounds();
-
-    if (this.sectionalLayers.get(zoom) == null) {
-      this.sectionalLayers.set(zoom, bounds);
-    } else if (this.sectionalLayers.get(zoom).contains(bounds)) {
-      //console.log("cache");
-      return;
-    }
-    this.sectionalLayers.set(zoom, this.sectionalLayers.get(zoom).extend(bounds));
-
     let dimensions = this.mapService.map.getSize();
     let width = String(dimensions.x + 100);
     let height = String(dimensions.y + 100);
