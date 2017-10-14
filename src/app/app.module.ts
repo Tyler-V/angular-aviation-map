@@ -10,14 +10,20 @@ import { MapComponent } from './components/map/map.component';
 import { MapToolbarComponent } from './components/map/toolbar/map-toolbar.component';
 
 import { SharedService } from './shared/shared.service';
-import { MapsComponent } from './components/map/toolbar/maps/maps.component';
+import { BasemapsComponent } from './components/map/toolbar/basemaps/basemaps.component';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { ModalComponent } from './shared/components/modal/modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MapComponent,
     MapToolbarComponent,
-    MapsComponent
+    BasemapsComponent,
+    HeaderComponent,
+    FooterComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,

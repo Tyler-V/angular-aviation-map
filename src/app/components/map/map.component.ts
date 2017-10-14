@@ -8,7 +8,7 @@ import * as esri from 'esri-leaflet';
 import 'leaflet-providers';
 
 @Component({
-  selector: 'nexrad-map',
+  selector: 'map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
   providers: [MapService, WeatherService, FaaService]
@@ -16,12 +16,13 @@ import 'leaflet-providers';
 export class MapComponent implements OnInit {
 
   map: L.Map;
+  basemap: L.Layer;
   sectionalLayer: L.Layer;
   radarLayer: L.Layer;
   previousZoom: number;
   maxBounds = L.latLngBounds(
-    L.latLng(20, -140),
-    L.latLng(50, -50)
+    L.latLng(20, -130),
+    L.latLng(50, -60)
   );
 
   constructor(private elementRef: ElementRef, private weatherService: WeatherService, private mapService: MapService, private faaService: FaaService, private shared: SharedService) { }
@@ -32,14 +33,17 @@ export class MapComponent implements OnInit {
       zoomControl: false,
       maxBounds: this.maxBounds,
       minZoom: 5,
-      maxZoom: 19,
-      layers: [new L.TileLayer('http://wms.chartbundle.com/tms/1.0.0/sec/{z}/{x}/{-y}.png', {
-        updateWhenIdle: false
-      })]
+      maxZoom: 19
     });
 
+    this.setBasemap(
+      new L.TileLayer('https://wms.chartbundle.com/tms/1.0.0/sec/{z}/{x}/{-y}.png', {
+        updateWhenIdle: false
+      })
+    );
+
     this.map.on("load", (e) => {
-      this.mapService.setLocationEvent.emit();
+      //this.mapService.setLocationEvent.emit();
       this.setWeatherRadar();
     });
 
@@ -62,5 +66,10 @@ export class MapComponent implements OnInit {
       this.map.addLayer(this.radarLayer);
       //this.shared.hideLoading();
     });
+  }
+
+  setBasemap(basemap: L.TileLayer) {
+    if (this.basemap) this.map.removeLayer(this.basemap);
+    this.map.addLayer(basemap);
   }
 }
