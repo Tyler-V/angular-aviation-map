@@ -26,7 +26,7 @@ export class MapComponent implements OnInit {
     L.latLng(50, -60)
   );
 
-  constructor(private elementRef: ElementRef, private weatherService: WeatherService, private mapService: MapService, private faaService: FaaService, private shared: SharedService) { }
+  constructor(public mapService: MapService, private elementRef: ElementRef, private weatherService: WeatherService, private faaService: FaaService, private shared: SharedService) { }
 
   ngOnInit() {
     this.map = this.mapService.map = new L.Map(this.elementRef.nativeElement, {
