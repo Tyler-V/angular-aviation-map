@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, URLSearchParams, Response } from '@angular/http';
-import { Utility } from './service-utility';
+import { Utility } from '../services/service-utility';
 import { MapService } from '../map.service';
 
 @Injectable()

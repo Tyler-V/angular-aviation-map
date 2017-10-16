@@ -118,9 +118,11 @@ export class MapToolbarComponent implements OnInit, OnDestroy {
 
   openMaps() {
     this.mapService.openBasemaps = true;
-   }
+  }
 
-  openLayers() { }
+  openLayers() {
+    this.mapService.openOverlays = true;
+  }
 
   setLocation() {
     let success = (position) => {

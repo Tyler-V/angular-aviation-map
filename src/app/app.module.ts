@@ -14,7 +14,8 @@ import { BasemapsComponent } from './components/map/basemaps/basemaps.component'
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ModalComponent } from './shared/components/modal/modal.component';
-import { BasemapPreviewComponent } from './components/map/basemaps/basemap-preview/basemap-preview.component';
+import { MapPreviewComponent } from './components/map/basemaps/map-preview/map-preview.component';
+import { OverlaysComponent } from './components/map/overlays/overlays.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { BasemapPreviewComponent } from './components/map/basemaps/basemap-previ
     HeaderComponent,
     FooterComponent,
     ModalComponent,
-    BasemapPreviewComponent
+    MapPreviewComponent,
+    OverlaysComponent
   ],
   imports: [
     BrowserModule,

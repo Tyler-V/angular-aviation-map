@@ -9,6 +9,7 @@ export class MapService implements OnInit {
 
   // Toolbar
   openBasemaps: boolean;
+  openOverlays: boolean;
   fullscreen: boolean;
   setLocationEvent: EventEmitter<number> = new EventEmitter();
 

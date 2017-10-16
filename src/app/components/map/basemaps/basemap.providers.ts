@@ -1,4 +1,4 @@
-export class Providers {
+export class Basemaps {
 
   static OpenStreetMap: Basemap = {
     name: 'Open Street Map',
@@ -52,6 +52,16 @@ export class Providers {
       attribution: 'Imagery from <a href="http://giscience.uni-hd.de/">GIScience Research Group @ University of Heidelberg</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }
   }
+
+  static NasaEarthAtNight: Basemap = {
+    name: 'NASA Earth At Night',
+    url: 'https://map1.vis.earthdata.nasa.gov/wmts-webmerc/VIIRS_CityLights_2012/default/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpg',
+    options: {
+      attribution: 'Imagery provided by services from the Global Imagery Browse Services (GIBS), operated by the NASA/GSFC/Earth Science Data and Information System (<a href="https://earthdata.nasa.gov">ESDIS</a>) with funding provided by NASA/HQ.'
+    }
+  }
+
+  // FAA
 
   static SectionalChart: Basemap = {
     name: 'US Sectional Chart',

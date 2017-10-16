@@ -1,0 +1,6 @@
+<div class="container">
+    <div *ngFor="let overlay of overlays" class="overlay" (click)="setOverlay.emit(overlay)">
+        <img src="{{overlay.image}}">
+        <div class="name">{{overlay.name}}</div>
+    </div>
+</div>

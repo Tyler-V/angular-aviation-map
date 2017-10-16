@@ -3,11 +3,11 @@ import { MapService } from '../../map.service';
 import * as L from 'leaflet';
 
 @Component({
-  selector: 'basemap-preview',
-  templateUrl: './basemap-preview.component.html',
-  styleUrls: ['./basemap-preview.component.scss']
+  selector: 'map-preview',
+  templateUrl: './map-preview.component.html',
+  styleUrls: ['./map-preview.component.scss']
 })
-export class BasemapPreviewComponent implements OnInit {
+export class MapPreviewComponent implements OnInit {
 
   @Input() basemap;
 

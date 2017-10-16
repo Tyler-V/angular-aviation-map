@@ -1,8 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import 'leaflet-providers';
 import * as L from 'leaflet';
-import * as esri from 'esri-leaflet';
-import { Providers, Basemap } from './providers';
+import { Basemaps, Basemap } from './basemap.providers';
 
 @Component({
   selector: 'basemaps',
@@ -16,19 +14,20 @@ export class BasemapsComponent implements OnInit {
   basemaps: Array<Basemap> = [];
 
   constructor() {
-    this.basemaps.push(Providers.SectionalChart);
-    this.basemaps.push(Providers.TerminalAreaChart);
-    this.basemaps.push(Providers.HelicopterChart);
-    this.basemaps.push(Providers.IFRAreaChart);
-    this.basemaps.push(Providers.IFREnrouteHighChart);
-    this.basemaps.push(Providers.IFREnrouteLowChart);
+    this.basemaps.push(Basemaps.SectionalChart);
+    this.basemaps.push(Basemaps.TerminalAreaChart);
+    this.basemaps.push(Basemaps.HelicopterChart);
+    this.basemaps.push(Basemaps.IFRAreaChart);
+    this.basemaps.push(Basemaps.IFREnrouteHighChart);
+    this.basemaps.push(Basemaps.IFREnrouteLowChart);
 
-    this.basemaps.push(Providers.EsriWorldImageryMap);
-    this.basemaps.push(Providers.EsriWorldStreetMap);
-    this.basemaps.push(Providers.EsriWorldTopoMap);
-    this.basemaps.push(Providers.OpenStreetMap);
-    this.basemaps.push(Providers.OpenTopoMap);
-    this.basemaps.push(Providers.OpenSurferMap);
+    this.basemaps.push(Basemaps.EsriWorldImageryMap);
+    this.basemaps.push(Basemaps.EsriWorldStreetMap);
+    this.basemaps.push(Basemaps.EsriWorldTopoMap);
+    this.basemaps.push(Basemaps.OpenStreetMap);
+    this.basemaps.push(Basemaps.OpenTopoMap);
+    this.basemaps.push(Basemaps.OpenSurferMap);
+    this.basemaps.push(Basemaps.NasaEarthAtNight);
   }
 
   ngOnInit() { }

@@ -3,10 +3,9 @@ import { MapService } from './map.service';
 import { WeatherService } from './services/weather.service';
 import { FaaService } from './services/faa.service';
 import { SharedService } from '../../shared/shared.service';
+import { Basemaps, Basemap } from './basemaps/basemap.providers';
+import { Overlays, Overlay, OverlayType } from './overlays/overlay.providers';
 import * as L from 'leaflet';
-import * as esri from 'esri-leaflet';
-import 'leaflet-providers';
-import { Providers, Basemap } from './basemaps/providers';
 
 @Component({
   selector: 'map',
@@ -18,6 +17,7 @@ export class MapComponent implements OnInit {
 
   map: L.Map;
   basemap: L.Layer;
+  overlays: Array<L.ImageOverlay | L.TileLayer> = [];
   sectionalLayer: L.Layer;
   radarLayer: L.Layer;
   previousZoom: number;
@@ -36,7 +36,7 @@ export class MapComponent implements OnInit {
       maxZoom: 19
     });
 
-    this.setBasemap(Providers.SectionalChart);
+    this.setBasemap(Basemaps.SectionalChart);
 
     this.map.on("load", (e) => {
       //this.mapService.setLocationEvent.emit();
@@ -60,11 +60,11 @@ export class MapComponent implements OnInit {
     //   this.radarLayer = L.imageOverlay(image, this.map.getBounds(), { opacity: .5 }).bringToFront();
     //   this.map.addLayer(this.radarLayer);
     // });
-    this.weatherService.getMRMS(image => {
-      if (this.radarLayer) this.map.removeLayer(this.radarLayer);
-      this.radarLayer = L.imageOverlay(image, this.map.getBounds(), { opacity: .5 }).bringToFront();
-      this.map.addLayer(this.radarLayer);
-    });
+    // this.weatherService.getMRMS(image => {
+    //   if (this.radarLayer) this.map.removeLayer(this.radarLayer);
+    //   this.radarLayer = L.imageOverlay(image, this.map.getBounds(), { opacity: .5 }).bringToFront();
+    //   this.map.addLayer(this.radarLayer);
+    // });
   }
 
   setBasemap(basemap: Basemap) {
@@ -74,5 +74,28 @@ export class MapComponent implements OnInit {
     if (this.mapService.openBasemaps) this.mapService.openBasemaps = false;
     if (basemap.options.maxZoom != undefined) this.map.setMaxZoom(basemap.options.maxZoom);
     this.shared.hideLoading();
+  }
+
+  setOverlay(overlay: Overlay) {
+    switch (overlay.type) {
+      case OverlayType.TileLayer:
+        let layer = new L.TileLayer(overlay.url, overlay.options).bringToFront().addTo(this.map);
+        break;
+      case OverlayType.ImageOverlay:
+        if (overlay.name.includes("MRMS")) {
+          this.weatherService.getMRMS(image => {
+            //if (this.radarLayer) this.map.removeLayer(this.radarLayer);
+            let layer = L.imageOverlay(image, this.map.getBounds(), { opacity: .5 }).bringToFront().addTo(this.map);
+            this.overlays.push(layer);
+          });
+        } else if (overlay.name.includes("NEXRAD")) {
+          this.weatherService.getNEXRAD(image => {
+            //if (this.radarLayer) this.map.removeLayer(this.radarLayer);
+            let layer = L.imageOverlay(image, this.map.getBounds(), { opacity: .5 }).bringToFront().addTo(this.map);
+            this.overlays.push(layer);
+          });
+        }
+    }
+    this.mapService.openOverlays = false;
   }
 }
