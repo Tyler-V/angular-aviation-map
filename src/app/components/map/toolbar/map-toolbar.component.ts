@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Renderer2 } from '@angular/core';
 import { trigger, state, style, animate, stagger, query, transition, keyframes } from '@angular/animations';
-import { MapService } from '../services/map.service';
+import { MapService } from '../map.service';
 import { Subscription } from 'rxjs/Subscription';
 import * as L from 'leaflet';
 
@@ -86,10 +86,10 @@ export class MapToolbarComponent implements OnInit, OnDestroy {
   isMapsOpen: boolean;
 
   state: string = "closed";
-  _icons: Array<string> = ["map", "layers", "my_location", "autorenew", "fullscreen"];
+  _icons: Array<string> = ["map", "layers", "my_location", "fullscreen"];
   icons: Array<string> = [];
 
-  constructor(private mapService: MapService) {
+  constructor(private mapService: MapService, private renderer: Renderer2) {
     this.setLocationSubscription = this.mapService.setLocationEvent.subscribe(() => {
       this.setLocation();
     })
@@ -111,13 +111,14 @@ export class MapToolbarComponent implements OnInit, OnDestroy {
       case "map": this.openMaps(); break;
       case "layers": this.openLayers(); break;
       case "my_location": this.setLocation(); break;
-      case "autorewnew": this.refresh(); break;
       case "fullscreen": this.fullscreen(); break;
     }
     this.toggle();
   }
 
-  openMaps() { }
+  openMaps() {
+    this.mapService.openBasemaps = true;
+   }
 
   openLayers() { }
 
@@ -139,18 +140,20 @@ export class MapToolbarComponent implements OnInit, OnDestroy {
 
   fullscreen() {
     let _element: any = this.mapService.map.getContainer();
-    if (!this.mapService.isFullScreen) {
-      if (_element.requestFullscreen) _element.requestFullscreen();
-      else if (_element.webkitRequestFullscreen) _element.webkitRequestFullscreen();
-      else if (_element.mozRequestFullScreen) _element.mozRequestFullScreen();
-      else if (_element.msRequestFullscreen) _element.msRequestFullscreen();
+    if (!this.mapService.fullscreen) {
+      if (_element.requestfullscreen) _element.requestfullscreen();
+      else if (_element.webkitRequestfullscreen) _element.webkitRequestfullscreen();
+      else if (_element.mozRequestfullscreen) _element.mozRequestfullscreen();
+      else if (_element.msRequestfullscreen) _element.msRequestfullscreen();
+      this.renderer.setStyle(_element, 'height', '100%');
     } else {
       let _document: any = document;
-      if (_document.exitFullScreen) _document.exitFullScreen();
-      else if (_document.webkitExitFullscreen) _document.webkitExitFullscreen();
-      else if (_element.mozCancelFullScreen) _document.mozCancelFullScreen();
-      else if (_element.msExitFullscreen) _document.msExitFullscreen();
+      if (_document.exitfullscreen) _document.exitfullscreen();
+      else if (_document.webkitExitfullscreen) _document.webkitExitfullscreen();
+      else if (_element.mozCancelfullscreen) _document.mozCancelfullscreen();
+      else if (_element.msExitfullscreen) _document.msExitfullscreen();
+      this.renderer.setStyle(_element, 'height', 'calc(100% - 75px)');
     }
-    this.mapService.isFullScreen = !this.mapService.isFullScreen;
+    this.mapService.fullscreen = !this.mapService.fullscreen;
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, URLSearchParams, Response } from '@angular/http';
 import { Utility } from './service-utility';
-import { MapService } from './map.service';
+import { MapService } from '../map.service';
 
 @Injectable()
 export class WeatherService {
@@ -10,7 +10,7 @@ export class WeatherService {
 
   constructor(private http: Http, private mapService: MapService) { }
 
-  getRadar() {
+  private getRadar() {
     let dimensions = this.mapService.map.getSize();
     let bounds = this.mapService.map.getBounds();
     let url = "https://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi?";

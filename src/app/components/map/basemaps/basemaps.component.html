@@ -1,0 +1,6 @@
+<div class="container">
+    <div *ngFor="let basemap of basemaps" class="basemap" (click)="setBasemap.emit(basemap)">
+        <basemap-preview [basemap]="basemap"></basemap-preview>
+        <div class="name">{{basemap.name}}</div>
+    </div>
+</div>

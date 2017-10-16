@@ -1,11 +1,12 @@
-import { Component, OnInit, ElementRef, ViewChild, EventEmitter } from '@angular/core';
-import { MapService } from './services/map.service';
+import { Component, OnInit, ElementRef, ViewChild, EventEmitter, HostBinding } from '@angular/core';
+import { MapService } from './map.service';
 import { WeatherService } from './services/weather.service';
 import { FaaService } from './services/faa.service';
 import { SharedService } from '../../shared/shared.service';
 import * as L from 'leaflet';
 import * as esri from 'esri-leaflet';
 import 'leaflet-providers';
+import { Providers, Basemap } from './basemaps/providers';
 
 @Component({
   selector: 'map',
@@ -29,18 +30,13 @@ export class MapComponent implements OnInit {
 
   ngOnInit() {
     this.map = this.mapService.map = new L.Map(this.elementRef.nativeElement, {
-      attributionControl: false,
       zoomControl: false,
       maxBounds: this.maxBounds,
       minZoom: 5,
       maxZoom: 19
     });
 
-    this.setBasemap(
-      new L.TileLayer('https://wms.chartbundle.com/tms/1.0.0/sec/{z}/{x}/{-y}.png', {
-        updateWhenIdle: false
-      })
-    );
+    this.setBasemap(Providers.SectionalChart);
 
     this.map.on("load", (e) => {
       //this.mapService.setLocationEvent.emit();
@@ -59,17 +55,24 @@ export class MapComponent implements OnInit {
   }
 
   setWeatherRadar() {
-    //this.shared.showLoading();
+    // this.weatherService.getNEXRAD(image => {
+    //   if (this.radarLayer) this.map.removeLayer(this.radarLayer);
+    //   this.radarLayer = L.imageOverlay(image, this.map.getBounds(), { opacity: .5 }).bringToFront();
+    //   this.map.addLayer(this.radarLayer);
+    // });
     this.weatherService.getMRMS(image => {
       if (this.radarLayer) this.map.removeLayer(this.radarLayer);
       this.radarLayer = L.imageOverlay(image, this.map.getBounds(), { opacity: .5 }).bringToFront();
       this.map.addLayer(this.radarLayer);
-      //this.shared.hideLoading();
     });
   }
 
-  setBasemap(basemap: L.TileLayer) {
+  setBasemap(basemap: Basemap) {
+    this.shared.showLoading();
     if (this.basemap) this.map.removeLayer(this.basemap);
-    this.map.addLayer(basemap);
+    this.basemap = new L.TileLayer(basemap.url, basemap.options).addTo(this.map);
+    if (this.mapService.openBasemaps) this.mapService.openBasemaps = false;
+    if (basemap.options.maxZoom != undefined) this.map.setMaxZoom(basemap.options.maxZoom);
+    this.shared.hideLoading();
   }
 }

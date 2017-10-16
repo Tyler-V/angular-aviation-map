@@ -1,1 +1,2 @@
 <map-toolbar></map-toolbar>
+<basemaps *ngIf="mapService.openBasemaps" (setBasemap)="setBasemap($event)"></basemaps>

@@ -6,8 +6,10 @@ export class MapService implements OnInit {
   map: L.Map;
   width: number;
   height: number;
-  isFullScreen: boolean;
 
+  // Toolbar
+  openBasemaps: boolean;
+  fullscreen: boolean;
   setLocationEvent: EventEmitter<number> = new EventEmitter();
 
   constructor() { }
