@@ -17,7 +17,7 @@ export class Overlays {
     name: 'Precipitation Layer',
     type: OverlayType.TileLayer,
     image: './assets/images/precipitation.png',
-    url: 'http://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=63c51d69edcd11dbefffb1f12635c313',
+    url: 'https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=63c51d69edcd11dbefffb1f12635c313',
     options: {
       opacity: .5
     }
