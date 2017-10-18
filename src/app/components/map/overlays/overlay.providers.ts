@@ -23,6 +23,26 @@ export class Overlays {
     }
   }
 
+  static Boundaries: Overlays = {
+    name: 'Boundaries',
+    type: OverlayType.TileLayer,
+    image: './assets/images/boundaries.png',
+    url: 'https://stamen-tiles-d.a.ssl.fastly.net/toner-lines/{z}/{x}/{y}.png',
+    options: {
+      opacity: .5
+    }
+  }
+
+  static Labels: Overlays = {
+    name: 'Labels',
+    type: OverlayType.TileLayer,
+    image: './assets/images/labels.png',
+    url: 'https://stamen-tiles-a.a.ssl.fastly.net/toner-labels/{z}/{x}/{y}.png',
+    options: {
+      opacity: .5
+    }
+  }
+
   static MRMS: Overlays = {
     name: 'MRMS Weather Radar',
     type: OverlayType.ImageOverlay,

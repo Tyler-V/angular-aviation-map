@@ -5,10 +5,12 @@
 </span>
 
 <div class="icons" [@bounceIn]="state">
-    <div *ngFor="let icon of icons" class="icon" (click)="click(icon)">
-        <span class="fa fa-stack fa-2x">
-          <i class="fa fa-background fa-circle fa-stack-2x fa-inverse text-shadow-1"></i>
-          <i class="material-icons fa-stack-1x">{{icon}}</i>
-        </span>
-    </div>
+  <div *ngFor="let icon of icons" [ngSwitch]="icon" class="icon" (click)="click(icon)">
+    <span class="fa fa-stack fa-2x">
+      <i class="fa fa-background fa-circle fa-stack-2x fa-inverse text-shadow-1"></i>
+      <i *ngSwitchCase="'my_location'" class="material-icons fa-stack-1x" [class.active]="mapService.location">{{icon}}</i>
+      <i *ngSwitchCase="'fullscreen'" class="material-icons fa-stack-1x" [class.active]="mapService.fullscreen">{{icon}}</i>
+      <i *ngSwitchDefault class="material-icons fa-stack-1x">{{icon}}</i>
+    </span>
+  </div>
 </div>

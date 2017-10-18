@@ -23,3 +23,10 @@
         transform: scale(.9);
     }
 }
+
+.fa-stack-1x {
+    color: #000000;
+    &.active {
+        color: #1d00ff;
+    }
+}

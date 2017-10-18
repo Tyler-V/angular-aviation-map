@@ -11,7 +11,7 @@ export class Basemaps {
   }
 
   static OpenTopoMap: Basemap = {
-    name: 'Open Topo Map',
+    name: 'Open Topographic Map',
     url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
     options: {
       maxZoom: 14,
@@ -21,7 +21,7 @@ export class Basemaps {
   }
 
   static EsriWorldStreetMap: Basemap = {
-    name: 'Esri World Street Map',
+    name: 'Esri Street Map',
     url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
     options: {
       attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
@@ -29,7 +29,7 @@ export class Basemaps {
   }
 
   static EsriWorldTopoMap: Basemap = {
-    name: 'Esri World Topo Map',
+    name: 'Esri Topographic Map',
     url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
     options: {
       attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
@@ -37,10 +37,26 @@ export class Basemaps {
   }
 
   static EsriWorldImageryMap: Basemap = {
-    name: 'Esri World Imagery',
+    name: 'Esri Imagery Map',
     url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
     options: {
       attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
+    }
+  }
+
+  static EsriNatGeoWorldMap: Basemap = {
+    name: 'National Geographic Map',
+    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}',
+    options: {
+      attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC'
+    }
+  }
+
+  static EsriWorldGrayCanvas: Basemap = {
+    name: 'Esri Gray Canvas Map',
+    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+    options: {
+      attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
     }
   }
 

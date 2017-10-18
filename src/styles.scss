@@ -89,3 +89,39 @@ body {
 .leaflet-control-attribution.leaflet-control {
     height: 16px !important;
 }
+
+$leaflet-pulsing-icon-color: #1d00ff;
+.leaflet-pulsing {
+    border: 2px solid $leaflet-pulsing-icon-color;
+    border-radius: 30px;
+    height: 18px;
+    width: 18px;
+    box-shadow: 0 0 3px 1px $leaflet-pulsing-icon-color;
+    animation: pulsate 1.1s ease-out;
+    animation-iteration-count: infinite;
+}
+
+.leaflet-pulsing-icon {
+    position: absolute;
+    top: 7px;
+    left: 7px;
+    border: 1px solid black;
+    border-radius: 30px;
+    height: 6px;
+    width: 6px;
+    background-color: $leaflet-pulsing-icon-color;
+}
+
+@keyframes pulsate {
+    0% {
+        -webkit-transform: scale(0.1, 0.1);
+        opacity: 0.0;
+    }
+    50% {
+        opacity: 1.0;
+    }
+    100% {
+        -webkit-transform: scale(1.2, 1.2);
+        opacity: 0.0;
+    }
+}

@@ -28,6 +28,8 @@ export class BasemapsComponent implements OnInit {
     this.basemaps.push(Basemaps.OpenTopoMap);
     this.basemaps.push(Basemaps.OpenSurferMap);
     this.basemaps.push(Basemaps.NasaEarthAtNight);
+    this.basemaps.push(Basemaps.EsriWorldGrayCanvas);
+    this.basemaps.push(Basemaps.EsriNatGeoWorldMap);
   }
 
   ngOnInit() { }

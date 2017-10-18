@@ -39,7 +39,7 @@ export class MapComponent implements OnInit {
     this.setBasemap(Basemaps.SectionalChart);
 
     this.map.on("load", (e) => {
-      //this.mapService.setLocationEvent.emit();
+      this.mapService.setViewEvent.emit();
       this.setWeatherRadar();
     });
 

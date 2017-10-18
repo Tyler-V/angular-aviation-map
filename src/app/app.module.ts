@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { HttpModule } from '@angular/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -31,6 +32,7 @@ import { OverlaysComponent } from './components/map/overlays/overlays.component'
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
     HttpModule,
     BrowserAnimationsModule,

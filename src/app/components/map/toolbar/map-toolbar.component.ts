@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, Input, Renderer2 } from '@angular/core';
+import { NgSwitch } from '@angular/common';
 import { trigger, state, style, animate, stagger, query, transition, keyframes } from '@angular/animations';
 import { MapService } from '../map.service';
 import { Subscription } from 'rxjs/Subscription';
@@ -81,6 +82,7 @@ import * as L from 'leaflet';
 })
 export class MapToolbarComponent implements OnInit, OnDestroy {
 
+  setViewSubscription: Subscription;
   setLocationSubscription: Subscription;
 
   isMapsOpen: boolean;
@@ -90,9 +92,12 @@ export class MapToolbarComponent implements OnInit, OnDestroy {
   icons: Array<string> = [];
 
   constructor(private mapService: MapService, private renderer: Renderer2) {
-    this.setLocationSubscription = this.mapService.setLocationEvent.subscribe(() => {
-      this.setLocation();
-    })
+    this.setViewSubscription = this.mapService.setViewEvent.subscribe(() => {
+      this.setView();
+    });
+    this.setLocationSubscription = this.mapService.setLocationEvent.subscribe(zoom => {
+      this.setLocation(zoom);
+    });
   }
 
   ngOnInit() { }
@@ -124,18 +129,56 @@ export class MapToolbarComponent implements OnInit, OnDestroy {
     this.mapService.openOverlays = true;
   }
 
-  setLocation() {
+  setView() {
+    this.getLocation(latLng => {
+        this.mapService.map.setView(latLng, 8);
+    })
+  }
+
+  setLocation(zoom?: number) {
+    if (this.mapService.locationMarker)
+      this.mapService.map.removeLayer(this.mapService.locationMarker);
+
+    if (!this.mapService.location) {
+      let success = (position) => {
+        let latLng = new L.LatLng(position.coords.latitude, position.coords.longitude);
+        if (zoom) {
+          this.mapService.map.setView(latLng, zoom);
+        }
+        else {
+          this.mapService.map.flyTo(latLng, 10, {
+            duration: 1,
+            noMoveStart: true
+          });
+        }
+        let pulse = L.divIcon({
+          className: 'css-icon',
+          html: '<div class="leaflet-pulsing"></div><div class="leaflet-pulsing-icon">',
+          iconSize: [20, 20]
+        });
+        this.mapService.locationMarker = L.marker(latLng, { icon: pulse }).addTo(this.mapService.map);
+      }
+
+      let error = (error) => { }
+
+      let options: PositionOptions = {
+        enableHighAccuracy: true,
+      }
+
+      window.navigator.geolocation.getCurrentPosition(success, error, options);
+    }
+
+    this.mapService.location = !this.mapService.location;
+  }
+
+  getLocation(callback: (any) => void) {
     let success = (position) => {
-      this.mapService.map.flyTo(new L.LatLng(position.coords.latitude, position.coords.longitude), 10, { noMoveStart: true });
+      let latLng = new L.LatLng(position.coords.latitude, position.coords.longitude);
+      callback(latLng);
     }
-
     let error = (error) => { }
-
-    let options: PositionOptions = {
-      enableHighAccuracy: true,
-    }
-
-    window.navigator.geolocation.getCurrentPosition(success, error, options)
+    let options: PositionOptions = { enableHighAccuracy: true }
+    window.navigator.geolocation.getCurrentPosition(success, error, options);
   }
 
   refresh() { }
@@ -147,14 +190,14 @@ export class MapToolbarComponent implements OnInit, OnDestroy {
       else if (_element.webkitRequestfullscreen) _element.webkitRequestfullscreen();
       else if (_element.mozRequestfullscreen) _element.mozRequestfullscreen();
       else if (_element.msRequestfullscreen) _element.msRequestfullscreen();
-      this.renderer.setStyle(_element, 'height', '100%');
+      this.renderer.addClass(_element, "fullscreen");
     } else {
       let _document: any = document;
       if (_document.exitfullscreen) _document.exitfullscreen();
       else if (_document.webkitExitfullscreen) _document.webkitExitfullscreen();
       else if (_element.mozCancelfullscreen) _document.mozCancelfullscreen();
       else if (_element.msExitfullscreen) _document.msExitfullscreen();
-      this.renderer.setStyle(_element, 'height', 'calc(100% - 75px)');
+      this.renderer.removeClass(_element, "fullscreen");
     }
     this.mapService.fullscreen = !this.mapService.fullscreen;
   }

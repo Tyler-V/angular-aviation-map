@@ -7,10 +7,15 @@ export class MapService implements OnInit {
   width: number;
   height: number;
 
+  setViewEvent: EventEmitter<number> = new EventEmitter(); 
+
   // Toolbar
   openBasemaps: boolean;
   openOverlays: boolean;
   fullscreen: boolean;
+
+  location: boolean;
+  locationMarker: L.Marker;
   setLocationEvent: EventEmitter<number> = new EventEmitter();
 
   constructor() { }
